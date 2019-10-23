@@ -25,7 +25,7 @@ assert thrs!=None, "Please specify threshold in the command line!"
 #---------------------------Helper functions------------------------------------------------
 def set_array(inps):
     '''
-    @param inps: sliced data frame
+    @param inps: data frame output from pandas library
     Converts dataframe into numpy array for easy work out
     '''
     inps = np.asarray(inps)
@@ -77,7 +77,7 @@ y = set_array(y)
 def main():
     iters = 0
     loss_list = []
-    error = 1000 #random value for initializing error sufficient large enough for stopping criteria
+    error = 1000 #random value for initializing error sufficiently larger than stopping criteria
 
     print()
     # dynamic print heading

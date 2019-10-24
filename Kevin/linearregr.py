@@ -118,10 +118,6 @@ y = input_ds.iloc[:,n_cols-1]
 x = set_array(x)
 y = set_array(y)
 
-#Data Visualization (optional)
-if dataVis == True:
-    grid_plot_2col(x, y, n_cols-1)
-
 #Gradient Descent
 def main():
     iters = 0
@@ -174,6 +170,9 @@ def main():
     print("--End of iteration! After: {} interations--".format(iters))
     print("--Execution time: {} s --".format(ex_elapsed))
 
+    # Data Visualization (optional)
+    if dataVis == True:
+        grid_plot_2col(x, y, n_cols - 1)
 #-----------------------------------Run--------------------------------------
 if __name__=="__main__":
     main()

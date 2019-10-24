@@ -111,7 +111,7 @@ def main():
         else:
             # stopping criteria if loss from previous step minus
             # loss from current step is below the threshold
-            error = loss_list[iters - 1] - loss_list[iters]
+            error = loss_list[iters-1] - loss_list[iters]
 
         # dynamic print values
         print("{:^6}".format(iters), end='')

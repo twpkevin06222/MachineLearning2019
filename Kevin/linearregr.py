@@ -18,9 +18,12 @@ input_path = results.data
 thrs = results.threshold
 
 #debugger
-assert lr!=None, "Please specify learningRate in the command line!"
-assert input_path!=None, "Please specify input data set!"
-assert thrs!=None, "Please specify threshold in the command line!"
+if lr==None and input_path==None and thrs==None:
+    assert lr!=None and input_path !=None and thrs!=None, "Parser argument not specify! => (example)$ python linearregr.py --data random.csv --learningRate 0.0001 --threshold 0.0001"
+else:
+    assert lr!=None, "Please specify learningRate in the command line!"
+    assert input_path!=None, "Please specify input data set!"
+    assert thrs!=None, "Please specify threshold in the command line!"
 
 #---------------------------Helper functions------------------------------------------------
 def set_array(inps):
@@ -65,7 +68,7 @@ n_cols = len(input_ds.columns)
 
 #Vectorization of input data
 #from the first column to second last column is assign as x values
-x = input_ds.iloc[:,0:n_cols -1]
+x = input_ds.iloc[:,0:n_cols-1]
 #last column is the target values which is y
 y = input_ds.iloc[:,n_cols-1]
 
@@ -76,7 +79,7 @@ y = set_array(y)
 #Gradient Descent
 def main():
     iters = 0
-    loss_list = []
+    loss_list = [] #list to store SSE at each iteration for comparison
     error = 1000 #random value for initializing error sufficiently larger than stopping criteria
 
     print()
@@ -92,7 +95,7 @@ def main():
     while error >= thrs:
         if iters == 0:
             # initialize with all weights as 0
-            w = np.zeros(n_cols - 1)
+            w = np.zeros(n_cols-1)
         else:
             # update each weights respectively
             w += lr * grad(x, y, y_pred)
@@ -112,13 +115,14 @@ def main():
 
         # dynamic print values
         print("{:^6}".format(iters), end='')
-        for i in range(n_cols - 1):
+        for i in range(n_cols-1):
             print("{:^8.4f}".format(w[i].round(4)), end='')
         print("{:>11.4f}".format(loss.round(4)))
 
         # update iteration
         iters += 1
 
+    #end execution time and calculate time elapsed
     ex_elapsed = (time.process_time() - ex_start)
     print()
     print("--End of iteration! After: {} interations--".format(iters))

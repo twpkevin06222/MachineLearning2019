@@ -10,12 +10,14 @@ parser = argparse.ArgumentParser(description='Input Parameters')
 parser.add_argument('--data',  action = 'store', type = str, help = 'Please choose--random.csv or yacht.csv')
 parser.add_argument('--learningRate', action = 'store', type = float,help = 'Please specify learning rate')
 parser.add_argument('--threshold', action = 'store', type = float, help = 'Threshold as stopping criteria')
+parser.add_argument('--dataVis', action = 'store', type = bool, help = 'Plot data correlations, by default FALSE', default= False)
 
 #Input arguments
 results = parser.parse_args()
 lr = results.learningRate
 input_path = results.data
 thrs = results.threshold
+dataVis = results.dataVis
 
 #debugger
 if lr==None and input_path==None and thrs==None:
@@ -60,6 +62,45 @@ def grad(x, y_true, y_pred):
     # hence written as np.dot(x^T,error)
     return np.dot(x.transpose(), (y_true - y_pred))
 
+def grid_plot_2col(x, y, x_col, marker='kx', figsize=(10, 18)):
+    '''
+    Plot grid of figures with 2 columns by default
+    @param x: x array
+    @param y: y array
+    @param x_col: number of columns for x data set
+    @param marker: Data points marker shape in polot
+    @param figsize: Figure size of grid plot output
+
+    return: A figure containing grid plot
+    '''
+    # if number of x columns is odd number
+    if x_col % 2 != 0:
+        plot_row = int((x_col + 1) / 2)
+    # if number of x columns is even number
+    else:
+        plot_row = int(x_col / 2)
+
+    fig, axes = plt.subplots(plot_row, 2, figsize=figsize)
+    fig.suptitle("Correlations between Data Points and Target Values", fontsize=16)
+
+    if x_col % 2 != 0:
+        # delete last axes since x columns is odd number
+        fig.delaxes(axes[plot_row - 1, 1])
+        for i, ax in enumerate(axes.flat):
+            if i == x_col: break
+            ax.plot(x[:, i], y, marker)
+            ax.set_xlabel('x_{}'.format(i))
+            ax.set_ylabel('y')
+    else:
+        for i, ax in enumerate(axes.flat):
+            ax.plot(x[:, i], y, marker)
+            ax.set_xlabel('x_{}'.format(i))
+            ax.set_ylabel('y')
+
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.95)
+    plt.show()
+
 #----------------------------Data preprocessing---------------------------------------
 input_ds = pd.read_csv(input_path, header = None)
 #insert initial bias vector in the first column
@@ -76,6 +117,11 @@ y = input_ds.iloc[:,n_cols-1]
 #convert data frames to numpy arrays
 x = set_array(x)
 y = set_array(y)
+
+#Data Visualization (optional)
+if dataVis == True:
+    grid_plot_2col(x, y, n_cols-1)
+
 #Gradient Descent
 def main():
     iters = 0

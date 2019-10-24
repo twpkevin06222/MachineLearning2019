@@ -68,7 +68,7 @@ def grid_plot_2col(x, y, x_col, marker='kx', figsize=(10, 18)):
     @param x: x array
     @param y: y array
     @param x_col: number of columns for x data set
-    @param marker: Data points marker shape in polot
+    @param marker: Data points marker shape in plot
     @param figsize: Figure size of grid plot output
 
     return: A figure containing grid plot

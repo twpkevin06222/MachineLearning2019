@@ -21,7 +21,7 @@ dataVis = results.dataVis
 
 #debugger
 if lr==None and input_path==None and thrs==None:
-    assert lr!=None and input_path !=None and thrs!=None, "Parser argument not specify! => (example)$ python linearregr.py --data random.csv --learningRate 0.0001 --threshold 0.0001"
+    assert lr!=None and input_path !=None and thrs!=None, "Parser argument not specify! => (example)$ python linearregr.py --data /data/path/random.csv --learningRate 0.0001 --threshold 0.0001"
 else:
     assert lr!=None, "Please specify learningRate in the command line!"
     assert input_path!=None, "Please specify input data set!"

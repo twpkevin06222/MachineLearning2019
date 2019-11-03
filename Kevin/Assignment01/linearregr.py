@@ -167,7 +167,7 @@ def main():
     #end execution time and calculate time elapsed
     ex_elapsed = (time.process_time() - ex_start)
     print()
-    print("--End of iteration! After: {} interations--".format(iters))
+    print("--End of iteration! After: {} iterations--".format(iters))
     print("--Execution time: {} s --".format(ex_elapsed))
 
     # Data Visualization (optional)

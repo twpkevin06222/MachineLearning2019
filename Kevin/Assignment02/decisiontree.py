@@ -55,8 +55,8 @@ def info_gain(data, split_attribute_name, n_class, target_name):
     return total_entropy - Weighted_Entropy
 
 
-def ID3_xml(data, originaldata, features, n_class, target_attribute_name, tree_xml, best_feature=None,
-            value=None, parent_node_class=None, space=''):
+def ID3_xml(data, originaldata, features, n_class, target_attribute_name, tree_xml,
+            best_feature=None, value=None):
     """
     This function compute the ID3 algorithm of a decision tree
 
@@ -67,7 +67,6 @@ def ID3_xml(data, originaldata, features, n_class, target_attribute_name, tree_x
     @param target_attribute_name: Column name where the target values are stored.
     @param best_feature: Best feature used at the particular iteration
     @param value: The value of the best feature used at the particular iteration
-    @param parent_node_class: The best target feature value will be stored
 
     return: Tree structure in xml format
     reference: https://www.python-course.eu/Decision_Trees.php
@@ -75,7 +74,6 @@ def ID3_xml(data, originaldata, features, n_class, target_attribute_name, tree_x
     # Stopping criteria for creating a leaf node
     # If all target_values have the same value, return this value, because entropy will be 0
     if len(np.unique(data[target_attribute_name])) <= 1:
-        space += ' '
         ent = entropy(data[target_attribute_name], n_class)
         target_val = np.unique(data[target_attribute_name])[0]
         # leaf node
@@ -83,15 +81,6 @@ def ID3_xml(data, originaldata, features, n_class, target_attribute_name, tree_x
         sub_sub_tree = ET.SubElement(tree_xml, 'node', entropy=str(ent), feature=str(best_feature), value=str(value))
         sub_sub_tree.text = str(target_val)
         return target_val
-
-    # Return the mode target feature value in the original dataset if the dataset is empty
-    elif len(data) == 0:
-        # axis 1 is the list where the counts are stored
-        return np.unique(originaldata[target_attribute_name])[np.argmax(np.unique(originaldata[target_attribute_name], return_counts=True)[1])]
-
-    # If the feature space is empty, return the mode target feature value of the direct parent node
-    elif len(features) == 0:
-        return parent_node_class
 
     # Grow tree
     else:
@@ -101,8 +90,6 @@ def ID3_xml(data, originaldata, features, n_class, target_attribute_name, tree_x
             ent = entropy(data[target_attribute_name], n_class)
             # root node
             sub_tree = ET.SubElement(tree_xml, 'node', entropy=str(ent), feature=str(best_feature), value=str(value))
-        # Set the default value for parent node
-        parent_node_class = np.unique(data[target_attribute_name])[np.argmax(np.unique(data[target_attribute_name], return_counts=True)[1])]
         # Compute the gain of each feature respectively
         item_values = [info_gain(data, feature, n_class, target_attribute_name) for feature in features]  # Return the information gain values for the features in the dataset
         # retrieving the index of the highest gain feature for best feature
@@ -118,8 +105,7 @@ def ID3_xml(data, originaldata, features, n_class, target_attribute_name, tree_x
             sub_data = data.where(data[best_feature] == value).dropna()
 
             # Recursively compute the ID3 algorithm for each of those sub datasets with the new parameters
-            subtree = ID3_xml(sub_data, data, features, n_class, target_attribute_name, sub_tree,
-                              best_feature, value, parent_node_class, space)
+            subtree = ID3_xml(sub_data, data, features, n_class, target_attribute_name, sub_tree, best_feature, value)
 
         return tree_xml
 

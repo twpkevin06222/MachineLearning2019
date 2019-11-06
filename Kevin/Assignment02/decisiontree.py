@@ -155,8 +155,9 @@ def main():
     # write in xml style
     xmlWrite = ET.ElementTree(tree_out)
     xmlWrite.write(output_xml)
-    print('-- End of execution! Your .xml file is saved as:{} --'.format(output_xml))
+    print('-- End of execution! Your .xml file is saved as: {} --'.format(output_xml))
     print("--Execution time: {} s --".format(ex_elapsed))
+
 #-----------------------------------Run------------------------------------------------
 if __name__=="__main__":
     main()

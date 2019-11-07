@@ -22,7 +22,7 @@ def y_pred(w, x):
     @param w: weight vectors
     @param x: feature arrays
 
-    return: array of predicted lables where y = 1 if w.x>0, else 0
+    return: array of predicted labels where y = 1 if w.x>0, else 0
     '''
     w_x = np.dot(x, w)
     return np.where(w_x > 0, 1, 0)
@@ -58,17 +58,17 @@ def anneal_lr(lr, iters):
         lr /= iters
         return lr
 
-def lr_switch(lr, iters, toogle):
+def lr_switch(lr, iters, toggle):
     '''
     This function acts as a switch to alternate between
     two different learning rate
 
     @param lr: initial learning rate
     @param iters: iteration
-    @param toogle: constant learning rate if 0
+    @param toggle: constant learning rate if 0
                    else anneal learning rate
     '''
-    if (toogle == 0):
+    if (toggle == 0):
         return lr
     else:
         return anneal_lr(lr, iters)

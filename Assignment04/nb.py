@@ -138,22 +138,19 @@ def main():
     variance_arr = variance(x, index_list, mean_arr, counts)
     n_clc = mean_arr.shape[0]
     n_att = mean_arr.shape[1]
-    idx_list = np.squeeze(np.asarray(index_list))  # converting tuples to array
     argmax_list = []
     #start multiple loop
-    for i in range(n_clc):  # index list depends on the number of class
-        idx_argmax_list = []
-        for idx in idx_list[i]:
-            posterior_list = []
-            for clc in range(n_clc):
-                total_likelihood = 1
-                for att in range(n_att):
-                    total_likelihood *= likelihood(x[idx, att], mean_arr[clc, att], variance_arr[clc, att])
-                posterior_list.append(prior_arr[clc] * total_likelihood)
-            idx_argmax = np.argmax(posterior_list)
-            idx_argmax_list.append(idx_argmax)
-        argmax_list.append(idx_argmax_list)
-
+    idx_argmax_list = []
+    for idx in range(len(x)):
+        posterior_list = []
+        for clc in range(n_clc):
+            total_likelihood = 1
+            for att in range(n_att):
+                total_likelihood *= likelihood(x[idx, att], mean_arr[clc, att], variance_arr[clc, att])
+            posterior_list.append(prior_arr[clc] * total_likelihood)
+        idx_argmax = np.argmax(posterior_list)
+        idx_argmax_list.append(idx_argmax)
+    argmax_list.append(idx_argmax_list)
     argmax_list = np.squeeze(np.asarray(argmax_list))  # convert tuple to array
     argmax_list = np.reshape((argmax_list), (-1))  # flatten the array
     # map the idx to the class for comparison

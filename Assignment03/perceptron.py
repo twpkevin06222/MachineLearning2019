@@ -77,7 +77,8 @@ def lr_switch(lr, iters, toggle):
 #read data using pandas library as .csv
 input_ds = pd.read_csv(input_path, header = None, sep="\t")
 n_cols_0 = len(input_ds.columns)
-input_ds = input_ds.drop(n_cols_0-1, axis=1) #delete the last column because its NaN for all rows
+if n_cols_0>3:
+    input_ds = input_ds.drop(n_cols_0-1, axis=1) #delete the last column because its NaN for all rows
 #insert bias
 input_ds.insert(1,None,np.ones(input_ds.shape[0]))
 #actual number of columns

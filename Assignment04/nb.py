@@ -35,7 +35,7 @@ def mean(x, index_list, counts):
     '''
     Compute the mean w.r.t class and attribute
 
-    @pararm x: The array of where x attributes is stored
+    @param x: The array of where x attributes is stored
     @param index_list: list of index w.r.t the class
     @param counts: the number of particular class
 
@@ -54,7 +54,7 @@ def variance(x, index_list, mean_arr, counts):
     '''
     Compute the variance (sigma**2) w.r.t class and attribute
 
-    @pararm x: The array of where x attributes is stored
+    @param x: The array of where x attributes is stored
     @param index_list: list of index w.r.t the class
     @param mean_arr: Array of mean with size (n_class, n_attribute)
     @param counts: the number of particular class
@@ -104,10 +104,8 @@ def prob_class(class_col, counts):
 # ----------------------------Data preprocessing------------------------------------------
 #read data using pandas library as .csv
 input_ds = pd.read_csv(input_path, header = None, sep="\t")
-n_cols_0 = len(input_ds.columns)
-if n_cols_0>3: #means there is extra redundant columns
-    input_ds = input_ds.drop(n_cols_0-1, axis=1) #delete the last column because its NaN for all rows
-#actual number of columns
+#drop columns if the columns consisted of NaN
+input_ds = input_ds.dropna(axis='columns')
 n_cols = len(input_ds.columns)
 # initiate empty list for column name
 col_name = []
